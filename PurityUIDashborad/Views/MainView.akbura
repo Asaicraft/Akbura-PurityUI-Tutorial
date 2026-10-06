@@ -1,0 +1,30 @@
+
+// Sidebar and mainContent
+<Grid ColumnDefinitions="Auto, *">
+
+
+	// Main content
+	<ScrollViewer 
+		x.Name="MainScrollViewer"
+		col-0 col-span-2 ${sm}:col-1 ${sm}:col-span-1
+		HorizontalScrollBarVisibility="Disabled"
+		VerticalScrollBarVisibility="Auto">
+
+		<Border p-4 ${sm}:p-6 ${lg}:p-8>
+
+			<StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top">
+				
+				// gap for top bar in mobile
+				<Border h-16 ${sm}:hidden/>
+
+				<MainContent/>
+
+			</StackPanel>
+
+		</Border>
+
+	</ScrollViewer>
+
+	<Sidebar col-0 col-span-2 ${sm}:col-span-1 z-20 self-stretch/>
+
+</Grid>

@@ -1,0 +1,30 @@
+using Avalonia.Media;
+
+param IList<StreamGeometry> Geometries;
+param string Header;
+param string Description;
+param string Price;
+
+<Border shadow rounded-xl px-8 py-5 bg-white>
+
+	<StackPanel gap-4 self-center>
+
+		<Border bg-teal-300 w-16 p-5 rounded-xl>
+			<Icon Geometries={Geometries} Fill="White"/>
+		</Border>
+
+		<StackPanel>
+
+			<TextBlock Text={Header} text-lg text-center font-bold mb-1 text-gray-700/>
+
+			<TextBlock Text={Description} text-xs text-center font-bold mb-1 text-gray-700/>
+
+			<GradientSeparator my-3/>
+
+			<TextBlock Text={Price} text-lg text-center font-bold text-gray-700/>
+
+		</StackPanel>
+
+	</StackPanel>
+
+</Border>

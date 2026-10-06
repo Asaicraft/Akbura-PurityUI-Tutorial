@@ -1,0 +1,171 @@
+using Avalonia.Media;
+using Avalonia.Styling;
+
+param bind string Text = "";
+param string Placeholder = "1110 9876 5432 1XXX";
+
+param DrawingImage Icon;
+
+<TextBox bind:Text={Text} PlaceholderText={Placeholder} h-16 text-gray-700
+	
+	PlaceholderForeground=${StaticResource --color-gray-400}
+	Background="White"
+	
+	BorderBrush=${StaticResource --color-gray-200}
+	border-1 rounded-2xl
+
+	CaretBrush=${StaticResource --color-gray-700}
+	
+	SelectionBrush=${StaticResource --color-teal-200}
+	SelectionForegroundBrush=${StaticResource --color-gray-700}
+
+	HorizontalContentAlignment="Stretch"
+	VerticalContentAlignment="Center">
+
+	<TextBox.Theme>
+
+		<ControlTheme BasedOn=${StaticResource {typeof(TextBox)}} TargetType="TextBox">
+
+			<Setter Property="Template">
+
+				<ControlTemplate TargetType="TextBox">
+
+					// Fluent TextBox.xaml
+					<Border 
+						x.Name="PART_BorderElement"
+						Background=${TemplateBinding Background}
+						BorderBrush=${TemplateBinding BorderBrush}
+						BorderThickness=${TemplateBinding BorderThickness}
+						CornerRadius=${TemplateBinding CornerRadius}
+						
+						MinWidth=${TemplateBinding MinWidth}
+						MinHeight=${TemplateBinding MinHeight}>
+						
+						<Grid ColumnDefinitions="41,*,44">
+
+							<Image 
+								col-0 
+
+								// Bind to our param
+								Source=${Binding $parent[CardTextBox].Icon}
+								Width="21"
+								Height="14"
+								HorizontalAlignment="Right" 
+								VerticalAlignment="Center" 
+								IsHitTestVisible="false"/>
+
+							<ScrollViewer x.Name="PART_ScrollViewer" col-1 ml-4 HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+
+								<Panel>
+
+									<TextBlock 
+										x.Name="PART_Placeholder"
+
+										Text=${TemplateBinding PlaceholderText}
+										Foreground=${TemplateBinding PlaceholderForeground}
+
+										TextAlignment=${TemplateBinding TextAlignment}
+										TextWrapping=${TemplateBinding TextWrapping}
+
+										HorizontalAlignment=${TemplateBinding HorizontalContentAlignment}
+										VerticalAlignment=${TemplateBinding VerticalContentAlignment}
+
+										IsHitTestVisible="false"/>
+
+									<TextPresenter
+										x.Name="PART_TextPresenter"
+										Text=${TemplateBinding Text, Mode=TwoWay}
+										
+										CaretBlinkInterval=${TemplateBinding CaretBlinkInterval}
+										CaretIndex=${TemplateBinding CaretIndex}
+									
+										SelectionStart=${TemplateBinding SelectionStart}
+										SelectionEnd=${TemplateBinding SelectionEnd} 
+										
+										SelectionBrush=${TemplateBinding SelectionBrush} 
+										SelectionForegroundBrush=${TemplateBinding SelectionEnd}
+									
+										CaretBrush=${TemplateBinding CaretBrush}
+										
+										TextAlignment=${TemplateBinding TextAlignment}
+										TextWrapping=${TemplateBinding TextWrapping}
+										
+										LineHeight=${TemplateBinding LineHeight}
+										LetterSpacing=${TemplateBinding LetterSpacing}
+									
+										HorizontalAlignment=${TemplateBinding HorizontalContentAlignment}
+										VerticalAlignment=${TemplateBinding VerticalContentAlignment}/>
+
+								</Panel>
+
+							</ScrollViewer>
+
+							// Icon
+							<Button col-2 size-8 p-0 self-center bg-transparent border-0 Focusable="false">
+
+								<Button.Theme>
+
+									<ControlTheme BasedOn=${StaticResource {typeof(Button)}} TargetType="Button">
+
+										<Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+											<Setter Property="Background" Value="Transparent"/>
+										</Style>
+
+										<Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+											<Setter Property="Background" Value=${StaticResource --color-gray-100}/>
+										</Style>
+
+										<Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+											<Setter Property="Background" Value=${StaticResource --color-gray-200}/>
+										</Style>
+
+									</ControlTheme>
+
+								</Button.Theme>
+
+								<Icon Geometries=${StaticResource Icon.Edit} Fill=${StaticResource --color-gray-700} size-3/>
+								
+							</Button>
+							
+						</Grid>
+
+					</Border>
+
+				</ControlTemplate>
+
+			</Setter>
+
+			<Style Selector="^ /template/ TextBlock#PART_Placeholder">
+				<Setter Property="IsVisible" Value="false"/>
+			</Style>
+
+			<Style Selector="^:empty /template/ TextBlock#PART_Placeholder">
+				<Setter Property="IsVisible" Value="True"/>
+			</Style>
+
+			<Style Selector="^:pointerover">
+				<Setter Property="Foreground" Value=${StaticResource --color-gray-700}/>
+
+				<Style Selector="^ /template/ Border#PART_BorderElement">
+					<Setter Property="BorderBrush" Value=${StaticResource --color-gray-300}/>
+					<Setter Property="Background" Value="White"/>
+				</Style>
+
+			</Style>
+
+			<Style Selector="^:focus">
+				<Setter Property="Foreground" Value=${StaticResource --color-gray-700}/>
+
+				<Style Selector="^ /template/ Border#PART_BorderElement">
+					<Setter Property="BorderBrush" Value=${StaticResource --color-teal-300}/>
+					<Setter Property="Background" Value="White"/>
+					<Setter Property="BorderThickness" Value="1"/>
+				</Style>
+
+			</Style>
+
+		</ControlTheme>
+
+	</TextBox.Theme>
+
+</TextBox>

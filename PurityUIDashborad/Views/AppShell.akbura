@@ -1,0 +1,15 @@
+using PurityUIDashborad.ViewModels;
+using Avalonia.Controls;
+
+namespace PurityUIDashborad.Views;
+
+inject MainViewModel Vm;
+
+<UserControl
+    DataContext={Vm}
+    bg-gray-50
+    x.DataType="MainViewModel">
+
+    <MainView DataContext={Vm} />
+
+</UserControl>

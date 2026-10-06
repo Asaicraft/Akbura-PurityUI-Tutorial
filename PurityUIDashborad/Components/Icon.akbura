@@ -1,0 +1,13 @@
+using Avalonia.Media;
+using Avalonia.Controls.Shapes;
+
+param IList<StreamGeometry> Geometries;
+param IBrush Fill;
+
+param double Size = 16;
+
+<Panel Width={Size} Height={Size} self-center>
+	
+	<Path Margin="0.5" self-stretch Stretch="Uniform" Data={new GeometryGroup { Children = new(Geometries) }} Fill={Fill} />
+
+</Panel>

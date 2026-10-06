@@ -1,0 +1,111 @@
+using PurityUIDashborad.Infrastructure;
+using System.Collections.Immutable;
+using Akbura.Hooks;
+using Avalonia.Styling;
+using System.Globalization;
+
+
+inject IInvoiceService InvoiceService;
+
+state ImmutableArray<InvoiceDto>? invoices = null;
+
+useEffect(async () =>
+{
+    invoices = (await InvoiceService.GetInvoicesAsync()).Take(5).ToImmutableArray();
+});;
+
+<Border shadow px-5 py-7 rounded-2xl bg-white>
+
+    <StackPanel gap-6>
+
+        <Grid ColumnDefinitions="*, Auto">
+
+            <TextBlock col-0 Text="Invoices" text-xl font-bold text-gray-700 self-start />
+
+            <Button col-1 Content="VIEW ALL" px-6 py-3 rounded-xl Background="White" border-teal-300 border-1 text-teal-300>
+                <Button.Theme>
+
+					<ControlTheme BasedOn=${StaticResource {typeof(Button)}} TargetType="Button">
+
+						<Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+							<Setter Property="BoxShadow" Value="0 3.5 5.5 #05000000"/>
+						</Style>
+
+						// disable hover effect
+						<Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+							<Setter Property="Background" Value=${Binding $parent[Button].Background}/>
+							<Setter Property="BorderBrush" Value=${Binding $parent[Button].BorderBrush}/>
+							<Setter Property="Foreground" Value=${Binding $parent[Button].Foreground}/>
+						</Style>
+
+					</ControlTheme>
+
+				</Button.Theme>
+			</Button>
+
+		</Grid>
+
+		$if (invoices == null)
+		{
+			<TextBlock Text="Loading..." text-sm text-gray-400/>
+		}
+		$else
+		{
+			<StackPanel gap-6>
+
+				$foreach (var invoice in invoices)
+				{
+					<Grid ColumnDefinitions="*, Auto, Auto" gap-x-1>
+
+						<StackPanel col-0 gap-1>
+
+							<TextBlock Text={invoice.DateTime.ToString("MMMM, dd, yyyy", CultureInfo.InvariantCulture)}
+								text-sm font-bold text-gray-700/>
+
+							<TextBlock Text={"#" + invoice.Id} text-xs font-bold text-gray-400 />
+
+						</StackPanel>
+
+						<TextBlock Text={"$" + invoice.Invoice.ToString("0.##", CultureInfo.InvariantCulture)}
+							col-1 text-xs font-bold text-gray-400 self-center/>
+
+						<Button col-2 p-1 bg-transparent border-0 self-center>
+
+							<Button.Theme>
+
+								<ControlTheme BasedOn=${StaticResource {typeof(Button)}} TargetType="Button">
+
+									<Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+										<Setter Property="BoxShadow" Value="0 3.5 5.5 #05000000"/>
+									</Style>
+
+									// disable hover effect
+									<Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+										<Setter Property="Background" Value=${Binding $parent[Button].Background}/>
+										<Setter Property="BorderBrush" Value=${Binding $parent[Button].BorderBrush}/>
+										<Setter Property="Foreground" Value=${Binding $parent[Button].Foreground}/>
+									</Style>
+
+								</ControlTheme>
+
+							</Button.Theme>
+
+							<StackPanel Orientation="Horizontal" gap-1>
+								
+								<Icon Geometries=${StaticResource Icon.File} Fill=${StaticResource --color-gray-700} size-3 self-center/>
+
+								<TextBlock Text="PDF" text-xs font-bold text-gray-700 self-center/>
+
+							</StackPanel>
+
+						</Button>
+
+					</Grid>
+				}
+
+			</StackPanel>
+		}
+
+	</StackPanel>
+
+</Border>

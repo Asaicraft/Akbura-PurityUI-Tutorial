@@ -1,0 +1,20 @@
+using Avalonia.Media;
+
+
+<Border h-px>
+
+	<Border.Background>
+
+		<LinearGradientBrush StartPoint="0%,50%" EndPoint="100%,50%">
+			
+			<GradientStop Offset="0" Color="#00E0E1E2"/>
+
+			<GradientStop Offset="0.5" Color="#FFE0E1E2"/>
+
+			<GradientStop Offset="1" Color="#28E0E1E2"/>
+
+		</LinearGradientBrush>
+
+	</Border.Background>
+
+</Border>

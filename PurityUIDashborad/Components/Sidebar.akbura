@@ -1,0 +1,191 @@
+using Akbura.Hooks;
+using Avalonia.Styling;
+
+
+state bool isExpanded = true;
+state bool isMobileExpanded = false;
+
+state double width = useTopLevelWidth();
+
+state NavButton? activeNavButton = null;
+
+var isMobile = width < 640d;
+
+var isCollapsible = width >= 1024d && width < 1280d;
+
+var isDesktop = width > 1280d;
+
+var effectiveExpanded =
+	isDesktop ||
+	(isCollapsible && isExpanded) ||
+	(isMobile && isMobileExpanded);
+
+var canToggle = isMobile || isCollapsible;
+
+var sidebarVisible = !isMobile || isMobileExpanded;
+
+void SetActive(NavButton? navButton)
+{
+	activeNavButton?.IsActive = false;
+
+	activeNavButton = navButton;
+	activeNavButton?.IsActive = true;
+}
+
+void ToggleSidebar()
+{
+	if(isMobile)
+	{
+		isMobileExpanded = !isMobileExpanded;
+		return;
+	}
+
+	if(isCollapsible)
+	{
+		isExpanded = !isExpanded;
+	}
+}
+
+void OpenDocumentation()
+{
+	// TODO
+}
+
+useEffect(() =>
+{
+	if(!isMobile)
+	{
+		isMobileExpanded = false;
+	}
+
+}, [isMobile]);
+
+useEffect(() =>
+{
+	SetActive(dashboard);
+	
+}, [dashboard]);
+
+
+<Panel>
+
+	<SidebarBrand 
+		IsVisible={isMobile && !isMobileExpanded} 
+		z-30 m-2 
+		HorizontalAlignment="Left" VerticalAlignment="Top" 
+		ToggleSidebar={ToggleSidebar}
+		IsCollapsed={true} CanToggle={true} />
+
+	// Top bar
+	<Border
+		IsVisible={isMobile && !isMobileExpanded}
+		z-10 h-16 bg-white pointer-events-none
+		HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+
+	// Clickable mobile bg
+
+	<Button IsVisible={isMobile && isMobileExpanded} Click={() => isMobileExpanded = false} Background="Black" z-10  opacity-25 border-0 rounded-none self-stretch>
+
+		// override fluetn theme
+
+		<Button.Theme>
+
+			<ControlTheme BasedOn=${StaticResource {typeof(Button)}} TargetType="Button">
+
+				// disable hover effect
+				<Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+					<Setter Property="Background" Value=${Binding $parent[Button].Background}/>
+				</Style>
+
+				// disable pressed effect
+				<Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+					<Setter Property="Background" Value=${Binding $parent[Button].Background}/>
+				</Style>
+
+			</ControlTheme>
+
+		</Button.Theme>
+
+	</Button>
+
+	<ScrollViewer
+		x.Name="SidebarScrollViewer"
+		HorizontalAlignment="Left" VerticalAlignment="Stretch"
+
+		Width={effectiveExpanded ? 256d : 80d}
+
+		bg-gray-50
+		z-20
+
+		HorizontalScrollBarVisibility="Disabled"
+		VerticalScrollBarVisibility="Hidden"
+
+		IsVisible={sidebarVisible}>
+
+		<StackPanel m-2>
+
+			<SidebarBrand IsCollapsed={!effectiveExpanded} CanToggle={canToggle} ToggleSidebar={ToggleSidebar} mb-4 />
+
+			<GradientSeparator mb-6/>
+
+			<StackPanel gap-2>
+
+				<NavButton 
+					x.Name="dashboard" 
+					Text="Dashboard"
+					Geometries=${StaticResource Icon.Home}
+					IsCollapsed={!effectiveExpanded}
+					NavigateTo={SetActive}/>
+
+				<NavButton 
+					Text="Tables"
+					Geometries=${StaticResource Icon.ChartBar}
+					IsCollapsed={!effectiveExpanded}
+					NavigateTo={SetActive}/>
+
+				<NavButton 
+					Text="Billing"
+					Geometries=${StaticResource Icon.Card}
+					IsCollapsed={!effectiveExpanded}
+					NavigateTo={SetActive}/>
+
+				<NavButton 
+					Text="RTL"
+					Geometries=${StaticResource Icon.Tool}
+					IsCollapsed={!effectiveExpanded}
+					NavigateTo={SetActive}/>
+
+			</StackPanel>
+
+			<TextBlock Text="ACCOUNT PAGES" IsVisible={effectiveExpanded} mt-6 mb-3 ml-5 text-gray-700 font-bold />
+
+			<StackPanel gap-2>
+
+				<NavButton 
+					Text="Profile"
+					Geometries=${StaticResource Icon.User}
+					IsCollapsed={!effectiveExpanded}
+					NavigateTo={SetActive}/>
+
+				<NavButton 
+					Text="Sign In"
+					Geometries=${StaticResource Icon.File}
+					IsCollapsed={!effectiveExpanded}
+					NavigateTo={SetActive}/>
+
+				<NavButton 
+					Text="Sign Up"
+					Geometries=${StaticResource Icon.Rocket}
+					IsCollapsed={!effectiveExpanded}
+					NavigateTo={SetActive}/>
+
+			</StackPanel>
+
+			<NeedHelp IsVisible={effectiveExpanded} mt-10 mb-2 self-center OpenDocumentation={OpenDocumentation}/>
+
+
+		</StackPanel>
+
+	</ScrollViewer>
+
+</Panel>

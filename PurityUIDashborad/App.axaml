@@ -1,0 +1,30 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:PurityUIDashborad"
+             x:Class="PurityUIDashborad.App"
+             RequestedThemeVariant="Light">
+    <Application.DataTemplates>
+        <local:ViewLocator />
+    </Application.DataTemplates>
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://Akbura/Styles.axaml" />
+                <ResourceInclude Source="Icons.axaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme />
+
+        <Style Selector=":is(TopLevel)">
+            
+            <!-- Override default font -->
+            <Setter Property="FontFamily" Value="Helvetica"/>
+
+        </Style>
+
+    </Application.Styles>
+</Application>

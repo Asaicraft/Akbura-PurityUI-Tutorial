@@ -1,0 +1,31 @@
+using Avalonia.Media;
+using Akbura.Hooks;
+
+param string Text = "PURITY UI DASHBOARD";
+param bool IsCollapsed = false;
+param bool CanToggle = true;
+
+
+command void ToggleSidebar();
+
+state IBrush foreground = useStaticResource<IBrush>("--color-gray-700", Brushes.DarkSlateGray);
+
+<Button 
+	{!CanToggle}:pointer-events-none
+
+	self-stretch
+	{IsCollapsed}:self-center
+
+	px-3 py-2 rounded-xl
+
+	Command={ToggleSidebar} Background="Transparent">
+
+	<StackPanel Orientation="Horizontal" gap-3 {IsCollapsed}:gap-0 self-center>
+
+		<Icon Geometries=${StaticResource Icon.Logo} Fill={foreground} size-6/>
+
+		<TextBlock Text={Text} {IsCollapsed}:hidden text-gray-700 text-sm font-bold whitespace-nowrap self-center />
+
+	</StackPanel>
+
+</Button>

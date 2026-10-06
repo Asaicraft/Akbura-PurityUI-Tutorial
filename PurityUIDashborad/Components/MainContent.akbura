@@ -1,0 +1,35 @@
+
+<Row gap-6>
+
+	// default row columns count is 12
+	<Grid RowDefinitions="Auto, *" col-span-12 ${xxl}:col-span-8 gap-y-6>
+
+		<Row gap-6 row-0>
+			<CreditCard col-span-12 ${xl}:col-span-6/>
+
+			<MoneyCard 
+				Geometries=${StaticResource Icon.Wallet}
+				Header="Salary"
+				Description="Belong Interactive"
+				Price="+$2000"
+				col-span-12
+				${sm}:col-span-6
+				${xl}:col-span-3/>
+
+			<MoneyCard 
+				Geometries=${StaticResource Icon.PayPal}
+				Header="Paypal"
+				Description="Freelance Payment"
+				Price="$455.00"
+				col-span-12
+				${sm}:col-span-6
+				${xl}:col-span-3/>
+		</Row>
+
+		<PaymentMethods row-1 self-stretch/>
+
+	</Grid>
+
+	<Invoices col-span-12 ${xxl}:col-span-4 self-stretch/>
+
+</Row>

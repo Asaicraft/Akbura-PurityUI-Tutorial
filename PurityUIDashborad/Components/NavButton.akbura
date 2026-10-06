@@ -1,0 +1,63 @@
+using Avalonia.Media;
+using Avalonia.Controls.Shapes;
+using Avalonia.Styling;
+using Akbura.Hooks;
+
+state IBrush teal = useStaticResource<IBrush>("--color-teal-300", Brushes.Teal);
+
+param bool IsActive = false;
+param bool IsCollapsed = false;
+
+param IList<StreamGeometry> Geometries;
+param string Text;
+
+command void NavigateTo(NavButton self);
+
+<Button
+	Command={async () => await NavigateTo.Execute(this)}
+	Background={IsActive ? Brushes.White : Brushes.Transparent}
+	ToolTip.Tip={Text}
+	HorizontalContentAlignment="Stretch"
+	self-stretch
+	px-4
+	{IsCollapsed}:px-2
+	${xl}:px-4
+	py-3
+	rounded-2xl>
+
+	// override fluetn theme
+
+	<Button.Theme>
+
+		<ControlTheme BasedOn=${StaticResource {typeof(Button)}} TargetType="Button">
+
+			<Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+				<Setter Property="BoxShadow" Value="0 3.5 5.5 #05000000"/>
+			</Style>
+
+			// disable hover effect
+			<Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+				<Setter Property="Background" Value=${Binding $parent[Button].Background}/>
+			</Style>
+
+		</ControlTheme>
+
+	</Button.Theme>
+
+	<StackPanel
+		Orientation="Horizontal"
+		gap-3
+		{IsCollapsed}:gap-0
+		${xl}:gap-3
+		{IsCollapsed}:self-center
+		${xl}:self-stretch>
+
+		<Border size-8 rounded-xl self-center {IsActive}:bg-teal-300 {!IsActive}:bg-white>
+			<Path self-center Data={new GeometryGroup() { Children = new(Geometries) }} Fill={IsActive ? Brushes.White : teal}/>
+		</Border>
+
+		<TextBlock Text={Text} {IsCollapsed}:hidden ${xl}:visible {IsActive}:text-gray-700 {!IsActive}:text-gray-400 font-bold self-center />
+
+	</StackPanel>
+
+</Button>

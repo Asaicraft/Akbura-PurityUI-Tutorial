@@ -1,0 +1,57 @@
+using Avalonia.Styling;
+using Avalonia.Media;
+
+<Border p-6 shadow rounded-xl bg-white>
+
+	<StackPanel>
+		
+		<Row Columns="2">
+
+			<TextBlock Text="Payment method" text-gray-700 font-bold self-start />
+
+			<Button Content="ADD A NEW CARD" self-end py-2 px-5 rounded-xl text-white>
+
+				<Button.Theme>
+					<ControlTheme BasedOn=${StaticResource {typeof(Button)}} TargetType="Button">
+
+						<Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+							<Setter Property="BoxShadow" Value="0 3.5 5.5 #05000000"/>
+						</Style>
+
+						// disable hover effect
+						<Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+							<Setter Property="Background" Value=${Binding $parent[Button].Background}/>
+						</Style>
+
+						<Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+							<Setter Property="Foreground" Value=${Binding $parent[Button].Foreground}/>
+						</Style>
+
+					</ControlTheme>
+				</Button.Theme>
+
+				<Button.Background>
+
+					<LinearGradientBrush StartPoint="0%, 100%" EndPoint="70%, -45%">
+
+						<GradientStop Offset="0" Color="#313860"/>
+						<GradientStop Offset="1" Color="#151928"/>
+
+					</LinearGradientBrush>
+
+				</Button.Background>
+
+			</Button>
+
+		</Row>
+
+		<Row gap-6 mt-6>
+
+			<CardTextBox Icon=${StaticResource Icon.Mastercard} col-span-12 ${lg}:col-span-6/>
+			<CardTextBox Icon=${StaticResource Icon.Visa} col-span-12 ${lg}:col-span-6/>
+
+		</Row>
+
+	</StackPanel>
+
+</Border>

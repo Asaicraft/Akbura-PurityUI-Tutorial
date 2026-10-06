@@ -1,0 +1,85 @@
+using Akbura.Hooks;
+using Avalonia.Media;
+using Avalonia.Controls.Shapes;
+using Avalonia.Styling;
+
+param string Title = "Need help?";
+param string Description = "Please check our docs";
+param string ButtonText = "DOCUMENTATION";
+
+command void OpenDocumentation();
+
+state IBrush iconColor = useStaticResource<IBrush>("--color-teal-300", Brushes.Teal);
+
+<Border w-55 h-45 rounded-2xl bg-teal-300 overflow-visible>
+
+	<Panel>
+
+		// add some cool decorations
+		<Viewbox Stretch="UniformToFill">
+
+			<Canvas w-55 h-45>
+
+				$foreach (var size in new[]
+					{
+						50d, 100d, 150d, 200d, 250d, 300d, 350d,
+					})
+
+				{
+					<Ellipse Canvas.Left={(55*4) - size / 2d} Canvas.Top={(45*4) - size / 2d} size-{size/4d} Stroke="#33FFFFFF" StrokeThickness="1" />
+				}
+
+			</Canvas>
+
+		</Viewbox>
+
+		<Grid m-4 RowDefinitions="Auto, *, Auto, Auto">
+
+
+			// Icon
+			<Border row-0 size-9 rounded-xl bg-white self-start>
+
+				<Icon Geometries=${StaticResource Icon.Help} Fill={iconColor} />
+
+			</Border>
+
+			<StackPanel row-2 mb-2>
+
+				<TextBlock Text={Title} text-white text-sm font-bold/>
+
+				<TextBlock Text={Description} text-white text-xs/>
+
+			</StackPanel>
+
+			<Button
+				row-3 w-full h-9 p-2 rounded-xl bg-white text-gray-700
+				Command={OpenDocumentation}
+				HorizontalContentAlignment="Stretch"
+				VerticalContentAlignment="Stretch">
+
+				<Button.Theme>
+
+					<ControlTheme BasedOn=${StaticResource {typeof(Button)}} TargetType="Button">
+
+						<Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+							<Setter Property="BoxShadow" Value="0 3.5 5.5 #05000000"/>
+						</Style>
+
+						// disable hover effect
+						<Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+							<Setter Property="Background" Value=${Binding $parent[Button].Background}/>
+						</Style>
+
+					</ControlTheme>
+
+				</Button.Theme>
+
+				<TextBlock Text={ButtonText} text-center text-gray-700 text-xs font-bold />
+
+			</Button>
+
+		</Grid>
+
+	</Panel>
+
+</Border>

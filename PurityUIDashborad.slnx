@@ -1,0 +1,12 @@
+<Solution>
+  <Project Path="PurityUIDashborad.Android/PurityUIDashborad.Android.csproj">
+    <Deploy />
+  </Project>
+  <Project Path="PurityUIDashborad.Browser/PurityUIDashborad.Browser.csproj" />
+  <Project Path="PurityUIDashborad.Desktop/PurityUIDashborad.Desktop.csproj" />
+  <Project Path="PurityUIDashborad.iOS/PurityUIDashborad.iOS.csproj">
+    <Deploy />
+  </Project>
+  <Project Path="PurityUIDashborad.ViewModels/PurityUIDashborad.ViewModels.csproj" />
+  <Project Path="PurityUIDashborad/PurityUIDashborad.csproj" />
+</Solution>
